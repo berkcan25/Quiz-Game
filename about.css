@@ -1,0 +1,9 @@
+#about {
+    font-size: 1.8rem;
+}
+
+.credits {
+    position: fixed;
+    bottom: 0;
+    padding: 2rem;
+}

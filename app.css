@@ -1,0 +1,123 @@
+:root {
+    background-color: lightcyan;
+    font-size: 62.5%;
+}
+
+* { /* Asterisk is a wildcard and means all elements*/
+    box-sizing: border-box; /*Uses border to calculate the size of the box*/
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: black;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    margin-bottom: 1rem; /*Rem is relative to the root font*/
+}
+
+h1 {
+    font-size: 5.4rem;
+    color: dodgerblue;
+    margin-bottom: 5rem;
+}
+
+h1 > span {
+    font-size: 2.4rem;
+    font-weight: 500; /*Weight = Boldness*/
+}
+
+h2 {
+    font-size: 4.2rem;
+    margin-bottom: 4rem;
+    font-weight: 700; 
+}
+
+h3 {
+    font-size: 2.8rem;
+    font-weight: 500;
+}
+
+/*Utilities*/
+
+.container {
+    width: 100vw; /*100 view width*/
+    height: 100vh; /*100 view height*/
+    display: flex; /*Flex boxes*/
+    justify-content: center; /*Aligns items horizontally*/
+    align-items: center; /*Aligns items vertically*/
+    max-width: 80rem; /*Making sure our objects are centered with some padding*/
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.container > * { /*Children of container*/
+    width: 100%;
+}
+
+.flex-column { /*Creates a flex box*/
+    display: flex;
+    flex-direction: column; /*Changes it to be vertical, horizontal by default. Will stack objects*/
+}
+
+.flex-center {
+    justify-content: center;
+    align-items: center;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.textcenter {
+    text-align: center;
+}
+
+.hidden {
+    display: none;
+}
+
+/*Buttons*/
+
+.btn {
+    font-size: 1.8rem;
+    padding: 1rem;
+    width: 20rem;
+    text-align: center;
+    border: 0.1rem solid dodgerblue;
+    margin-bottom: 1rem;
+    text-decoration: none; /*Removes underline since anchor tags have underlining by default*/
+    color: dodgerblue;
+    background-color: white;
+}
+
+.btn:hover {
+    cursor: pointer;
+    box-shadow: 0 0.4rem 1.4rem rgba(86, 185, 235, 0.5);
+    transform: translateY(-0.1rem);
+    transition: transform 150ms; /*Moves up the box shadow when hovering*/
+}
+
+.btn[disabled]:hover {
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+/* FORMS */
+form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+input {
+    margin: 1rem;
+    width: 20rem;
+    padding: 1.5rem;
+    font-size: 1.8rem;
+    text-align: center;
+}
