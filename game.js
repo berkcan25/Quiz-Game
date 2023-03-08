@@ -4,6 +4,14 @@ const choices = Array.from(document.getElementsByClassName("choice-text")); //Pu
 const questionCounterText = document.getElementById("questionCounter");
 const scoreText = document.getElementById("score");
 const progressBarFull = document.getElementById("progressBarFull");
+const exitMenu = document.getElementById("exitMenu");
+const escapeKey = document.getElementById("escapeKey");
+const game = document.getElementById("game");
+const yesExit = document.getElementById("yes");
+const noExit = document.getElementById("no");
+
+
+const linkToQuestions = "https://opentdb.com/api.php?amount=10&category=15&difficulty=easy&type=multiple"
 
 let currentQuestion = {};
 let acceptingAnswers = false;
@@ -11,37 +19,40 @@ let score = 0;
 let questionCounter = 0;
 let availableQuestions = [];
 
-let questions = [
-    {
-        question: 'Inside which HTML element do we put the JavaScript?',
-        choice1: '<script>',
-        choice2: '<javascript>',
-        choice3: '<js>',
-        choice4: '<scripting>',
-        answer: 1,
-    },
-    {
-        question:
-            "What is the correct syntax for referring to an external script called 'xxx.js'?",
-        choice1: "<script href='xxx.js'>",
-        choice2: "<script name='xxx.js'>",
-        choice3: "<script src='xxx.js'>",
-        choice4: "<script file='xxx.js'>",
-        answer: 3,
-    },
-    {
-        question: " How do you write 'Hello World' in an alert box?",
-        choice1: "msgBox('Hello World');",
-        choice2: "alertBox('Hello World');",
-        choice3: "msg('Hello World');",
-        choice4: "alert('Hello World');",
-        answer: 4,
-    },
-];
+let questions = [];
+
+
+fetch(linkToQuestions)
+    .then( res => {
+        return res.json();
+    })
+    .then(loadedQuestions => {
+        questions = loadedQuestions.results.map( loadedQuestion => {
+            const formattedQuestion = {
+                question: loadedQuestion.question
+            };
+            const answerChoises = [ ... loadedQuestion.incorrect_answers];
+            formattedQuestion.answer = Math.floor(Math.random()*3) + 1;
+            answerChoises.splice(
+                formattedQuestion.answer - 1,
+                0,
+                loadedQuestion.correct_answer
+            );
+            answerChoises.forEach((choice, index) => {
+                formattedQuestion["choice" + (index + 1)] = choice;
+            });
+
+            return formattedQuestion;
+        });
+        startGame();
+    })
+    .catch( err => {
+        console.error(err)
+    })
 
 //Constants
 const CORRECT_BONUS = 1;
-const MAX_QUESTIONS = 3;
+const MAX_QUESTIONS = 10;
 
 startGame = () => {
     questionCounter = 0;
@@ -62,12 +73,12 @@ getNewQuestion = () => {
     questionCounterText.innerText = questionCounter;
     const questionIndex = Math.floor(Math.random() * availableQuestions.length);
     currentQuestion = availableQuestions[questionIndex];
-    question.innerText = currentQuestion.question; //Changes the text inside of the question tag
+    question.innerHTML = currentQuestion.question; //Changes the text inside of the question tag
     //update progress bar
     
     choices.forEach( choice => {
         const number = choice.dataset["number"];
-        choice.innerText = currentQuestion["choice" + number];
+        choice.innerHTML = currentQuestion["choice" + number];
     });
     
     availableQuestions.splice(questionIndex, 1);
@@ -83,10 +94,10 @@ choices.forEach(choice => {
         acceptingAnswers = false;
         const selectedChoice = e.target;
         const selectedAnswer = selectedChoice.dataset["number"];;
-        
+
         const classToApply = selectedAnswer == currentQuestion.answer ? "correct" : "incorrect";
-        selectedChoice.parentElement.classList.add(classToApply); //Adds the correctness to the whole div
-        
+        choices[currentQuestion.answer-1].parentElement.classList.add("correct");
+        selectedChoice.parentElement.classList.add(classToApply); //Adds the correctness to the whole div        
         if (classToApply  == "correct") {
             incrementScore(CORRECT_BONUS);
         }
@@ -95,6 +106,7 @@ choices.forEach(choice => {
 
         setTimeout( () => {
             selectedChoice.parentElement.classList.remove(classToApply); //Removes the correctness to the whole div
+            choices[currentQuestion.answer-1].parentElement.classList.remove("correct");
             getNewQuestion();
         }, 800)
 
@@ -106,6 +118,21 @@ incrementScore = num => {
     scoreText.innerText = score;
 }
 
+escapeKey.addEventListener("click", exit => {
+    acceptingAnswers = false;
+    exitMenu.style.display = "flex";
+    game.style.opacity = 0.25;
+    yesExit.addEventListener("click",  leave => {
+        exitMenu.style.display = "none";
+        game.style.opacity = 1;
+        return window.location.assign("index.html");
+    })
+    noExit.addEventListener("click",  leave => {
+        exitMenu.style.display = "none";
+        game.style.opacity = 1;
+    })
+})
 
 
-startGame();
+
+

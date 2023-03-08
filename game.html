@@ -11,8 +11,16 @@
     <!--Page specific css-->
 </head>
 <body>
-    <div class="container">
+    <div class="container" id="layer">
         <div id="game" class="justify-center flex-column">
+            <div class="escapeKey">
+                <button
+                type="button"
+                class="btn escape-key" 
+                id="escapeKey">
+                EXIT
+                </button>
+            </div>
             <div id="hud">
                 <div id="hud-item">
                     <p class="hud-prefix">
@@ -55,6 +63,13 @@
                 <p class="choice-prefix">D</p>
                 <p class="choice-text" data-number="4">Choice D</p>
             </div>
+        </div>
+        <div id="exitMenu" class="warning justify-center flex-column">
+            <h2 class="warningText">Would you like to <b>exit</b> the quiz and go back to the home screen?</h1>
+            <menu class="menu-options">
+                <li><button class="btn" id="no">Continue</button></li>
+                <li><button class="btn" id="yes">Exit</button></li>
+            </menu>
         </div>
     </div>
     <script src="game.js"></script>
